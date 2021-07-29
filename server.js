@@ -1,7 +1,14 @@
 const express = require('express');
-const app = express();
+const mongoose = require('mongoose');
+const cors = require('cors');
+
 require('dotenv').config();
 
-const port = process.env.PORT || 8080;
+const app = express();
+app.use(express.json());
+app.use(cors());
 
-app.listen(port, () => console.log(`Server Active\nPort: ${port}`));
+const PORT = process.env.PORT || 8080;
+const MONGO_DB_URI = process.env.MONGO_DB_URI;
+
+app.listen(PORT, () => console.log(`Server Active\nPort: ${PORT}`));
