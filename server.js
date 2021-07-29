@@ -21,8 +21,10 @@ mongoose.connect(MONGO_DB_URI, {
 mongoose.connection.on('connected', () => console.log('Mongoose: Active'));
 
 // ROUTES
-const newUserRoutes = require('./routes/newUserRoutes');
+const createUserRoutes = require('./routes/newUserRoutes');
+const loginRoutes = require('./routes/loginRoutes');
 
-app.use('/new-user', newUserRoutes);
+app.use('/create-user', createUserRoutes);
+app.use('/login', loginRoutes)
 
 app.listen(PORT, () => console.log(`Server Active\nPort: ${PORT}`));

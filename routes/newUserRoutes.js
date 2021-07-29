@@ -22,9 +22,7 @@ router
         const rawUserData = req.body;
         
         try {
-            //current DB entries to be updated as they use userName instead of correct username
             const data = await UserRecord.find({$or: [{email : rawUserData.email}, {username : rawUserData.username}]});
-            // Differentiate between username and email
             if (data[0].username === rawUserData.username && data[0].email === rawUserData.email) return res.status(409).send('a user with that email and username already exists');
             if (data[0].email === rawUserData.email) return res.status(409).send('a user with that email already exists');
             if (data[0].username === rawUserData.username) return res.status(409).send('a user with that username already exists');
