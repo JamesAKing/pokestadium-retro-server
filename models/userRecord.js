@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const UserRecordSchema = new mongoose.Schema({
-    id : String,
+    playerId : String,
     username : String,
     email : String,
     password : String,

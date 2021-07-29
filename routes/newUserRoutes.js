@@ -11,8 +11,6 @@ router
 
         // Handle data on the client side to avoid excess API calls
         const rawUserData = req.body;
-
-        console.log(rawUserData);
         
         try {
             //current DB entries to be updated as they use userName instead of correct username
@@ -23,9 +21,12 @@ router
             console.log(err);
         };
 
-        const newUserObj = createNewUser(rawUserData);
+        const newUserRecord = new UserRecord(createNewUser(rawUserData));
+        console.log(newUserRecord);
+
 
         // Add to DB
+
 
         // If Succesfully added, send success resp
 
