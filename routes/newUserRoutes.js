@@ -22,7 +22,14 @@ router
         };
 
         const newUserRecord = new UserRecord(createNewUser(rawUserData));
-        console.log(newUserRecord);
+        
+        newUserRecord.save(err => {
+            if (err) {
+                console.log(err)
+                return res.send('error savng new record');
+            }
+            console.log('added new user record');
+        })
 
 
         // Add to DB

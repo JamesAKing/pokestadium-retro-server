@@ -4,6 +4,8 @@ const createNewUser = (newUserObj) => {
     return {
         playerId : uuidv4(),
         username : newUserObj.username,
+        email : newUserObj.email,
+        password : newUserObj.password,
         player : {
             firstName : newUserObj.firstName,
             lastName : newUserObj.lastName,
