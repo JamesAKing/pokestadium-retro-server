@@ -1,9 +1,9 @@
 const { v4: uuidv4 } = require('uuid');
 
-const createNewUser = (id, newUserObj) => {
+const createNewUser = (newUserObj) => {
     return {
-        id : id,
-        userName : newUserObj.userName,
+        id : uuidv4(),
+        username : newUserObj.username,
         player : {
             firstName : newUserObj.firstName,
             lastName : newUserObj.lastName,

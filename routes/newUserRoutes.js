@@ -10,27 +10,20 @@ router
         // *** LOOK INTO HOW TO SECURLEY STORE USER DATA ***
 
         // Handle data on the client side to avoid excess API calls
+        const rawUserData = req.body;
 
-        const { username, firstName, lastName, email, password } = req.body;
+        console.log(rawUserData);
         
-        console.log(username);
-
         try {
-            const data = await UserRecord.find({$or: [{email : email}, {username : username}]});
+            //current DB entries to be updated as they use userName instead of correct username
+            const data = await UserRecord.find({$or: [{email : rawUserData.email}, {username : rawUserData.username}]});
             // Differentiate between username and email
             if (data.length !== 0) return res.status(409).send('a user with that email or username already exists');
         } catch (err) {
             console.log(err);
         };
 
-        // try {
-        //     const usernameData = await UserRecord.find({ username : username });
-        //     if (usernameData.length !== 0) return res.status(409).send('A User with that Username already exists');
-        // } catch (err) {
-        //     console.log(err);
-        // };
-
-        // Create new User Record Object
+        const newUserObj = createNewUser(rawUserData);
 
         // Add to DB
 
