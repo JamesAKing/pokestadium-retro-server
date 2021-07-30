@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const UserRecord = require('../models/userRecord');
+const RefreshTokens = require('../models/refreshTokens');
 const { generateAccessToken } = require('../utilities/authFunctions');
 
 router
@@ -29,15 +30,42 @@ router
             const user = { playerId : playerId };
 
             const accessToken = generateAccessToken(user);
+            const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
 
-            res.status(200).json({ accessToken });
+            const newRefreshTokens = new RefreshTokens({ refreshToken : refreshToken });
+            
+            newRefreshTokens.save(err => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send(err)
+                }
+                console.log('refresh token saved to DB');
 
+            })
+            res.status(200).json({ accessToken, refreshToken });
         } catch (err) {
             console.log(err);
+            res.send('POST/ login endpoint error');
         };
+    });
 
-        // Fix Error: UnhandledPromiseRejectionWarning: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
-        res.send('POST/ login endpoint');
+router
+    .route('/token')
+    .post(async (req, res) => {
+        const refreshToken = req.body.token;
+        if (refreshToken == null) return res.status(401).send('no token provded');
+
+        try {
+            const data = await RefreshTokens.find({ });
+            console.log(data);
+
+            res.send('POST/ token endpoint');
+
+        } catch (err) {
+            res.status().send('error accessing refresh token database');
+        };
+        // res.send('POST/ token endpoint');
+
     })
 
 module.exports = router;
