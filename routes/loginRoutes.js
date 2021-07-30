@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const UserRecord = require('../models/userRecord');
+const { generateAccessToken } = require('../utilities/authFunctions');
 
 router
     .route('/')
@@ -27,8 +28,7 @@ router
             const playerId = data[0].playerId;
             const user = { playerId : playerId };
 
-            // Add token expiration and refresh functionality
-            const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+            const accessToken = generateAccessToken(user);
 
             res.status(200).json({ accessToken });
 
@@ -36,6 +36,7 @@ router
             console.log(err);
         };
 
+        // Fix Error: UnhandledPromiseRejectionWarning: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
         res.send('POST/ login endpoint');
     })
 
