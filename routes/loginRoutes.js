@@ -54,12 +54,19 @@ router
     .post(async (req, res) => {
         const refreshToken = req.body.token;
         if (refreshToken == null) return res.status(401).send('no token provded');
-
+        
         try {
-            const data = await RefreshTokens.find({ });
-            console.log(data);
+            const data = await RefreshTokens.find({ refreshToken: refreshToken });
+            if (data.length === 0) return res.status(403).send('invalid token');
 
-            res.send('POST/ token endpoint');
+            jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(403).send('invalid token');
+                }
+                const accessToken = generateAccessToken({ name: user.name })
+                res.status(200).json({ accessToken });
+            })
 
         } catch (err) {
             res.status().send('error accessing refresh token database');
