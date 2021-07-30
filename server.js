@@ -22,7 +22,7 @@ mongoose.connect(MONGO_DB_URI, {
 mongoose.connection.on('connected', () => console.log('Mongoose: Active'));
 
 // ROUTES
-const createUserRoutes = require('./routes/newUserRoutes');
+const createUserRoutes = require('./routes/createUserRoutes');
 const loginRoutes = require('./routes/loginRoutes');
 const logoutRoutes = require('./routes/logoutRoutes');
 const userRecordsRoutes = require('./routes/userRecordRoutes');
