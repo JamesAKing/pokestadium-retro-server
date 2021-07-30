@@ -8,7 +8,7 @@ router
     .route('/')
     .get(authenticateJWT, async (req, res) => {
         const { playerId } = req.user;
-        
+
         try {
             const data = await UserRecord.find({ playerId : playerId});
             
@@ -19,6 +19,6 @@ router
             console.log(err);
             res.status(500).send('error retrieving data');
         }
-    })
+    });
 
 module.exports = router;

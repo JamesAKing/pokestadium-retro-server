@@ -27,6 +27,7 @@ router
             const playerId = data[0].playerId;
             const user = { playerId : playerId };
 
+            // Add token expiration and refresh functionality
             const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
 
             res.status(200).json({ accessToken });
