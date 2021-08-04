@@ -8,14 +8,6 @@ const { generateAccessToken } = require('../utilities/authFunctions');
 router
     .route('/')
     .post(async (req, res) => {
-
-        // DATA to be passed from frontend: 
-        // {
-        //     "username": "HotGuy94",
-        //     "email": "test@test.com",
-        //     "password": "password"
-        // }
-
         const rawLoginData = req.body;
 
         // *** IMPROVE AUTHENTICATION METHODS TO BE SECURE ***
@@ -42,7 +34,8 @@ router
                 console.log('refresh token saved to DB');
 
             })
-            res.status(200).json({ accessToken, refreshToken });
+            // Add token to header?
+            res.header("Authorization", `Bearer ${accessToken}`).status(200).json({ accessToken, refreshToken });
         } catch (err) {
             console.log(err);
             res.send('POST/ login endpoint error');
@@ -71,8 +64,6 @@ router
         } catch (err) {
             res.status().send('error accessing refresh token database');
         };
-        // res.send('POST/ token endpoint');
-
     })
 
 module.exports = router;
