@@ -34,7 +34,7 @@ router
                 console.log('refresh token saved to DB');
 
             })
-            // Add token to header?
+            
             res.header("Authorization", `Bearer ${accessToken}`).status(200).json({ accessToken, refreshToken });
         } catch (err) {
             console.log(err);

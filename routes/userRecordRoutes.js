@@ -8,7 +8,6 @@ router
     .route('/')
     .get(authenticateJWT, async (req, res) => {
         const { playerId } = req.user;
-
         try {
             const data = await UserRecord.find({ playerId : playerId});
             
