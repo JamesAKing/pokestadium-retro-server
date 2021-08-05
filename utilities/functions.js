@@ -14,8 +14,8 @@ const createNewUser = (newUserObj) => {
             total : 0,
             won : 0
         }
-    }
-}
+    };
+};
 
 module.exports = {
     createNewUser

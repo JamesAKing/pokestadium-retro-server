@@ -11,10 +11,8 @@ router
         const rawLoginData = req.body;
 
         // *** IMPROVE AUTHENTICATION METHODS TO BE SECURE ***
-
         try {
             const data = await UserRecord.find({ email: rawLoginData.email });
-
             if (data.length === 0) return res.status(401).send('invalid username or password');
             if (data[0].password !== rawLoginData.password) return res.status(401).send('invalid username or password');
 
@@ -24,21 +22,20 @@ router
             const accessToken = generateAccessToken(user);
             const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
 
+            // Client not currently not doing anything with refresh tokens.
             const newRefreshTokens = new RefreshTokens({ refreshToken : refreshToken });
-            
             newRefreshTokens.save(err => {
                 if (err) {
                     console.log(err);
                     return res.status(500).send(err)
                 }
                 console.log('refresh token saved to DB');
-
             })
             
-            res.header("Authorization", `Bearer ${accessToken}`).status(200).json({ accessToken, refreshToken });
+            res.header("authorization", `Bearer ${accessToken}`).status(200).json({ accessToken, refreshToken });
         } catch (err) {
             console.log(err);
-            res.send('POST/ login endpoint error');
+            res.status(400).send(err);
         };
     });
 
@@ -57,13 +54,13 @@ router
                     console.log(err);
                     return res.status(403).send('invalid token');
                 }
+
                 const accessToken = generateAccessToken({ name: user.name })
                 res.status(200).json({ accessToken });
-            })
-
+            });
         } catch (err) {
-            res.status().send('error accessing refresh token database');
+            res.status(400).send(err);
         };
-    })
+    });
 
 module.exports = router;
